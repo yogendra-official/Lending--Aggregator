@@ -1,0 +1,279 @@
+Now as we have notifications in out UI react app where we can configure them from UI with toggle buttons. 
+So now we have to provide its backend implementation so we will store all notification related data showing on UI react app like all toggle buttons all type of notifications 
+and there will 2 type of notification e-mail and mobile OTP so as per user saved its notification settings this service will be responsible for sending notifications 
+ service requirements are as below :
+ 
+
+Here's your complete, production-grade AI prompt for building a robust Notification Service Microservice, now enhanced with:
+
+✅ Kafka event-driven architecture
+
+✅ WebSocket-based real-time push notifications
+
+✅ Email/SMS alert integration
+
+✅ MongoDB for storing user preferences & delivery logs
+
+✅ Admin alerting
+
+✅ Eureka service registration
+
+✅ Swagger API documentation
+
+✅ Spring Boot Actuator + Prometheus metrics
+
+✅ Unit tests with JUnit & Mockito
+
+✅ 📄 README.md file
+
+✅ 🧱 Architecture diagram file (architecture.puml)
+
+✅ 🐳 Dockerfile for containerization
+
+🔧 AI Prompt: Notification Service Microservice (Kafka + MongoDB + WebSockets + Docker)
+Prompt Title:
+Design and implement a Notification Service Microservice using Java 21, Spring Boot, Kafka, MongoDB, WebSockets, and optional Email/SMS gateways. The service must handle real-time user notifications based on Kafka events, support customizable user preferences, notify admins on critical events, expose REST APIs with Swagger, register with Eureka, provide monitoring via Prometheus, include unit tests, and come with a ready-to-use README.md, Dockerfile, and architecture diagram.
+
+✅ Functional Requirements
+1. Real-Time User Notifications
+Send in-app messages via WebSocket on:
+
+Loan approval
+
+Loan rejection
+
+Payment due
+
+Investment completed
+
+bank added 
+
+investment done 
+
+credit card payment due
+
+credit card payment done
+
+Push via /ws/notifications WebSocket endpoint
+
+2. Email & SMS Alerts
+Integrate with Email APIs (e.g., SendGrid, Mailgun) or SMS (e.g., Twilio) for critical events
+
+Trigger email/sms for:
+
+Loan status changes
+
+Investment returns
+
+Admin alerts
+
+3. Kafka-Based Event-Driven Architecture
+Subscribe to Kafka topics:
+
+loan.status.changed
+
+investment.returned
+
+loan.repayment.due
+
+admin.alerts
+
+On receiving a message, process and send notification based on user preferences
+
+4. Customizable Notification Preferences
+Allow users to specify preferences:
+
+Channel: WebSocket, Email, SMS
+
+Events: loan approved, repayment reminder, etc.
+
+Store preferences in MongoDB
+
+5. Admin Notifications
+Send critical alerts to platform admins on:
+
+System errors
+
+Rejected loans
+
+Financial or operational flags
+
+🧱 Database (MongoDB Schema Examples)
+UserNotificationPreference
+
+json
+
+{
+  "userId": "u123",
+  "emailEnabled": true,
+  "smsEnabled": false,
+  "websocketEnabled": true,
+  "subscribedEvents": ["loan.approved", "repayment.due"]
+}
+NotificationLog
+
+json
+
+{
+  "recipient": "u123",
+  "type": "EMAIL",
+  "channel": "EMAIL",
+  "content": "Your loan is approved",
+  "status": "SENT",
+  "timestamp": "2024-04-17T14:00:00Z"
+}
+🌐 REST API Endpoints (Examples)
+http
+Copy
+Edit
+GET    /api/notifications/preferences/{userId}
+POST   /api/notifications/preferences
+GET    /api/notifications/logs?userId=u123
+
+WebSocket: /ws/notifications
+⚙️ Tech Stack
+
+Concern	Technology
+Language	Java 21
+Framework	Spring Boot 3.2.x
+Messaging	Apache Kafka
+Real-time	WebSocket (STOMP/SockJS)
+Persistence	MongoDB (Spring Data Mongo)
+Alerts	Email/SMS API Integration
+Discovery	Eureka (Spring Cloud)
+Monitoring	Actuator + Prometheus
+Documentation	Swagger (Springdoc OpenAPI)
+Testing	JUnit + Mockito
+Docker	Dockerfile + Spring Boot JAR
+📁 Suggested Directory Structure
+arduino
+Copy
+Edit
+com.example.notificationservice
+├── controller
+│   ├── NotificationPreferenceController.java
+│   ├── NotificationLogController.java
+├── websocket
+│   └── NotificationWebSocketHandler.java
+├── kafka
+│   └── NotificationConsumer.java
+├── service
+│   ├── NotificationService.java
+│   ├── EmailSenderService.java
+│   ├── SmsSenderService.java
+│   └── PreferenceService.java
+├── model
+│   ├── UserNotificationPreference.java
+│   ├── NotificationEvent.java
+│   └── NotificationLog.java
+├── repository
+│   ├── NotificationPreferenceRepository.java
+│   └── NotificationLogRepository.java
+├── config
+│   ├── KafkaConfig.java
+│   ├── WebSocketConfig.java
+│   ├── MongoConfig.java
+│   ├── SwaggerConfig.java
+│   └── PrometheusConfig.java
+├── test
+│   └── service
+├── resources
+│   └── application.yml
+├── Dockerfile ✅
+├── README.md ✅
+├── architecture.puml ✅
+🐳 Dockerfile
+Dockerfile
+Copy
+Edit
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+COPY build/libs/notification-service-*.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+📄 README.md (To be auto-generated)
+markdown
+Copy
+Edit
+# 📣 Notification Service
+
+This microservice handles user and admin notifications triggered by loan/investment events using Kafka. It supports WebSocket, Email, and SMS channels.
+
+## 🧩 Features
+- WebSocket real-time push notifications
+- Kafka-driven event consumption
+- MongoDB for user preferences and logs
+- Email/SMS integration
+- Swagger + Prometheus + Eureka
+
+## ⚙️ Build & Run
+```bash
+./gradlew clean build
+docker build -t notification-service .
+docker run -p 8080:8080 notification-service
+🧪 Kafka Topics
+loan.status.changed
+
+investment.returned
+
+loan.repayment.due
+
+admin.alerts
+
+🔍 Monitoring
+/actuator/health
+
+/actuator/prometheus
+
+📚 API Docs
+Swagger: http://localhost:8080/swagger-ui.html
+
+scss
+Copy
+Edit
+
+---
+
+### 🧱 Architecture Diagram (`architecture.puml`)
+
+```plantuml
+@startuml
+actor User
+actor Admin
+package "Notification Service" {
+  [WebSocket Handler] --> [NotificationService]
+  [Kafka Consumer] --> [NotificationService]
+  [NotificationService] --> [MongoDB]
+  [NotificationService] --> [Email/SMS API]
+}
+Kafka --> [Kafka Consumer]
+User --> [WebSocket Handler]
+Admin --> [NotificationService]
+@enduml
+✅ Monitoring & Prometheus
+/actuator/metrics
+
+/actuator/prometheus
+
+Custom metrics:
+
+Notifications sent per channel
+
+Failed delivery rate
+
+Active WebSocket sessions
+
+✅ Unit Testing Plan
+Preference saving and retrieval
+
+Kafka event handling
+
+WebSocket delivery
+
+Email/SMS mock sending
+
+Mongo repo integration (@DataMongoTest)
+
+
+
+Also don't forget to create architecture of the system and readme file and for database use MongoDb and configure the same 

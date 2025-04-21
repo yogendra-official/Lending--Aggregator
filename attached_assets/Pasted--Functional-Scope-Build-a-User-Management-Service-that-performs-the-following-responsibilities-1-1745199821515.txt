@@ -1,0 +1,151 @@
+✅ Functional Scope:
+Build a User Management Service that performs the following responsibilities:
+
+1. User Registration
+Accept user details: name, email, mobile, password, etc.
+
+Validate inputs (e.g., unique email, format, password rules).
+
+Store users securely in a PostgreSQL database.
+
+Encrypt passwords using BCryptPasswordEncoder.
+
+2. Authentication
+Provide a /login endpoint that:
+
+Authenticates using email and password
+
+Returns both:
+
+accessToken (JWT – valid for 15 mins)
+
+refreshToken (valid for 7 days)
+
+Store tokens (JWTs) for session validation and traceability.
+
+On each request, these tokens will be used by other microservices for authentication and authorization.
+
+3. Authorization (RBAC)
+Implement role-based access control (RBAC).
+
+Predefined roles:
+
+ROLE_USER – general users (borrowers/lenders)
+
+ROLE_ADMIN – platform management
+
+ROLE_LOAN_MANAGER – handles loan operations
+
+Restrict access to specific endpoints or features based on role using @PreAuthorize or antMatchers().
+
+4. JWT Token Handling
+Issue, validate, and refresh JWT tokens.
+
+Secure signing with HS256 or RS256 algorithm.
+
+Create endpoints:
+
+/validate-token – verifies token integrity
+
+/refresh-token – generates a new access token using refresh token
+
+Maintain in-memory (or DB-backed if needed) storage of refresh tokens.
+
+5. Password Management
+Secure password encryption with BCrypt.
+
+Endpoint for password change:
+
+/change-password
+
+Forgot/reset password flow (optional):
+
+Token/email-based flow for reset link
+
+6. Profile Management
+Allow logged-in users to view and update:
+
+name, email, mobile, address
+
+Endpoint:
+
+GET /profile
+
+PUT /profile
+
+🧱 Tech Stack and Constraints:
+✅ Language: Java 21
+
+✅ Framework: Spring Boot 3.2.x
+
+✅ Security: Spring Security + JWT
+
+✅ Database: PostgreSQL
+
+✅ Service Discovery: Spring Cloud Netflix Eureka
+
+✅ Token Storage: JWT (stateless), Refresh token in memory or DB
+
+✅ Architecture: Microservice, discoverable via Eureka
+
+✅ Build Tool: Gradle
+
+✅ Patterns:
+
+Service layer pattern
+
+DTO pattern
+
+Exception handling via @ControllerAdvice
+
+Use Slf4j for structured logging
+
+🔒 Security & Best Practices:
+Use @PreAuthorize or method-level security with @EnableGlobalMethodSecurity
+
+Use clean code, modular layers:
+
+controller, service, repository, model, config, util
+
+Input validation using javax.validation
+
+Log authentication events, errors, and access violations
+
+🔄 API Examples (Optional):
+http
+Copy
+Edit
+POST /auth/register
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "Password@123",
+  "mobile": "9876543210"
+}
+
+POST /auth/login
+{
+  "email": "john@example.com",
+  "password": "Password@123"
+}
+
+GET /profile   (Authorization: Bearer <access_token>)
+PUT /profile   (Authorization: Bearer <access_token>)
+POST /auth/refresh-token
+Would you like me to generate the entire Spring Boot project for this backend now, packaged and structured with all the components you need?
+
+I can zip and deliver a complete working version with:
+
+REST controllers
+
+Services
+
+Entities
+
+JWT utility
+
+PostgreSQL configuration
+
+Role-based authorization
+
+Token generation + refresh support

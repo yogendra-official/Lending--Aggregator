@@ -1,0 +1,318 @@
+Create a UI react project which will be connect to java spring boot application from backend for rest api calls to fill the data and get the data using rest api call to populate data 
+
+1. Login Screen
+Purpose:
+Allow users to securely log in to the account aggregator platform.
+
+
+Key Elements:
+Username/Email Field: Allow the user to input their registered email or username.
+
+
+Password Field: Secure password input.
+
+
+Login Button: Submits the login credentials.
+
+
+Forgot Password Link: Helps users reset their password if forgotten.
+
+
+Sign-up Link: Takes users to the registration page.
+
+
+Social Media Login Buttons: (Optional) Allow users to sign in via Google, Facebook, etc.
+
+
+Branding: Include the brand logo and color palette for a consistent identity.
+
+
+Flow:
+User enters credentials.
+
+
+Upon successful login, they are directed to the Dashboard or Home screen.
+
+
+
+2. Dashboard/Home Screen (Post-Login)
+Purpose:
+Display a summary of the user's account activity and provide quick access to other sections of the app.
+
+
+Key Elements:
+Navigation Bar: Links to all major sections (Account Details, Settings, Transactions, Reports, Logout, etc.).
+
+
+Account Overview: Summary of the linked accounts, balance, last transaction, and activity.
+
+
+Quick Action Buttons: Actions like linking a new account, viewing account details, etc.
+
+
+Recent Activity Feed: Show the most recent updates or transactions.
+
+
+Notifications: Alert the user about important events, like linking new accounts or security alerts.
+
+
+Flow:
+User can navigate to linked accounts, account management, and view their account aggregation status.
+
+
+Provides quick access to linked accounts and activity logs.
+
+
+
+3. Linked Accounts Screen
+Purpose:
+Display all accounts aggregated by the platform.
+
+
+Key Elements:
+Account List: Show a list of linked accounts (e.g., bank accounts, credit cards, utilities, etc.).
+
+
+Each account displays basic details (name, type, last activity, balance).
+
+
+Search/Filter Options: Allow users to filter by account type or search for specific accounts.
+
+
+Add New Account Button: Guide the user to add new accounts via OAuth or direct input.
+
+
+Account Details Link: Clicking an account takes the user to more detailed account activity (transactions, balance history).
+
+
+Flow:
+User can view and manage their linked accounts.
+
+
+Can link new accounts or remove existing ones.
+
+
+View detailed information for each account, including account balance, transactions, and more.
+
+
+
+4. Transactions Screen
+Purpose:
+Display a list of all transactions from the aggregated accounts.
+
+
+Key Elements:
+Transaction History List: Show all transactions, sorted by date (with pagination or infinite scrolling).
+
+
+Display details like the transaction date, amount, account involved, and category.
+
+
+Search/Filter Options: Allow filtering by transaction type, date range, or account.
+
+
+Export Button: Users can export transactions to CSV or PDF.
+
+
+Transaction Details: Clicking a transaction shows more details such as merchant, payment method, or status.
+
+
+Flow:
+Users can search, sort, and filter their transactions.
+
+
+Export or view detailed information about individual transactions.
+
+
+Set categories for transactions if needed.
+
+
+
+5. Account Aggregation Setup Screen
+Purpose:
+Guide the user through the process of linking external accounts to the aggregator platform.
+
+
+Key Elements:
+Step-by-Step Wizard: Display clear steps to link accounts.
+
+
+Step 1: Choose Account Type (Bank, Credit Card, Utility, etc.).
+
+
+Step 2: Login to the external account using OAuth or API keys.
+
+
+Step 3: Allow permissions to access data (read-only).
+
+
+Step 4: Confirm successful linking.
+
+
+Link Another Account Button: Allow users to link more accounts after completing the setup.
+
+
+Progress Indicator: Show the current step of the process.
+
+
+Flow:
+User follows the simple steps to link an account.
+
+
+On success, they are redirected to the Linked Accounts Screen.
+
+
+Option to link more accounts is provided.
+
+
+
+6. Reports/Insights Screen
+Purpose:
+Provide users with insights and summaries based on their aggregated data.
+
+
+Key Elements:
+Charts/Graphs: Display financial insights like spending trends, income vs. expenses, savings goals, etc.
+
+
+Monthly/Yearly Summary: Summary of account balances and transactions over selected periods.
+
+
+Recommendations: Provide personalized insights (e.g., budget recommendations, savings tips).
+
+
+Export Report Button: Option to export reports as CSV, PDF, etc.
+
+
+Flow:
+User can select different reports or time periods.
+
+
+Insights are displayed visually (charts, graphs, tables).
+
+
+Option to export insights to other formats.
+
+
+
+7. Settings Screen
+Purpose:
+Allow the user to manage account settings and preferences.
+
+
+Key Elements:
+Profile Settings: Edit personal information (name, email, etc.).
+
+
+Security Settings: Change password, enable two-factor authentication, and manage security questions.
+
+
+Notification Settings: Configure notifications for transactions, alerts, or important events.
+
+
+Linked Accounts Management: View, add, or remove linked accounts.
+
+
+Language/Theme: Option to change language or switch between light/dark themes.
+
+
+Flow:
+User navigates to settings to update their profile, password, notifications, or linked accounts.
+
+
+Changes are saved, and confirmation is provided.
+
+
+
+8. Admin Dashboard (For Admin Users)
+Purpose:
+Allow administrators to manage user data, linked accounts, and platform settings.
+
+
+Key Elements:
+User Management: Search, view, and manage all users registered on the platform.
+
+
+Admins can view a user's linked accounts and activity.
+
+
+Option to disable accounts or reset passwords.
+
+
+Account Aggregation Overview: Monitor the overall status of account aggregations across all users.
+
+
+Platform Usage Statistics: View data on active users, total linked accounts, transaction volumes, etc.
+
+
+System Alerts: Monitor and address system alerts, security issues, or unusual activities.
+
+
+Flow:
+Admin can view and manage users, including account status and activity.
+
+
+Access system-wide reports, performance data, and security alerts.
+
+
+
+9. Notifications Screen
+Purpose:
+Display all important notifications to the user, like new linked accounts, security alerts, or system messages.
+
+
+Key Elements:
+Notification List: Display a list of notifications (e.g., new linked accounts, failed account syncs, etc.).
+
+
+Read/Unread Status: Mark notifications as read or unread.
+
+
+Mark All as Read: Allow users to mark all notifications as read at once.
+
+
+Notification Categories: Sort notifications by type (Security, Account Updates, Transactions, etc.).
+
+
+Flow:
+User can view and manage notifications.
+
+
+Mark notifications as read or take action on specific alerts.
+
+
+
+10. Logout Screen
+Purpose:
+Allow the user to securely log out of the platform.
+
+
+Key Elements:
+Logout Confirmation: A confirmation screen asking if the user is sure they want to log out.
+
+
+Session Timeout Reminder: If the user has been idle for a long time, show a reminder about the session expiration.
+
+
+Flow:
+User clicks "Logout."
+
+
+They are logged out and redirected to the Login Screen.
+
+
+
+General UX Principles for Account Aggregator Web App
+Simplicity: Keep the design clean and minimal to avoid overwhelming users.
+
+
+Consistency: Use consistent design patterns (e.g., buttons, icons, typography) across all screens.
+
+
+Responsive Design: Ensure the app is mobile-friendly, as many users will access the platform from mobile devices.
+
+
+Security Focused: Emphasize security on critical pages, like the login, account linking, and settings pages.
+
+
+

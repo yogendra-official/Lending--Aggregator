@@ -1,0 +1,203 @@
+Loan Aggregation Service's new responsibilities:
+
+✅ Multi-bank integration via Factory Pattern
+
+✅ Apache Camel for external APIs
+
+✅ Eureka Service Discovery
+
+✅ Swagger API documentation
+
+✅ Spring Boot Actuator + Prometheus monitoring
+
+✅ Redis for caching
+
+✅ PostgreSQL for persistence
+
+✅ Unit testing with JUnit & Mockito
+
+✅ Bank account linking
+
+✅ Transaction data retrieval from linked banks
+
+🔧 AI Prompt: Loan Aggregation + Linked Bank Accounts Microservice
+Prompt Title:
+Design and implement a Loan Aggregation Microservice using Spring Boot (latest) and Java 21 that:
+
+Aggregates loan offers from multiple banks (e.g., HDFC, SBI, ABFL, BoB) via the Factory Pattern
+
+Fetches transaction data from linked bank accounts
+
+Registers with Eureka
+
+Supports Swagger documentation
+
+Implements Spring Boot Actuator with Prometheus monitoring
+
+Uses Redis for caching and PostgreSQL for persistence
+
+Includes unit tests for core components
+
+✅ Functional Modules:
+1. Multi-Bank Loan Aggregation (Factory Pattern)
+Define a BankLoanProvider interface
+
+Implement providers per bank:
+
+HdfcLoanProvider
+
+SbiLoanProvider
+
+etc.
+
+Use Factory Pattern via LoanProviderFactory to resolve provider dynamically
+
+Fetch loan data via Apache Camel or WebClient
+
+2. Linked Bank Account Management
+Maintain records of linked bank accounts per user
+
+Store account metadata in PostgreSQL:
+
+bankCode, accountNumber, accountType, linkedAt, etc.
+
+Provide REST APIs:
+
+GET /api/accounts/linked?userId=123
+
+POST /api/accounts/link (mock implementation for now)
+
+3. Transaction Data Retrieval
+Fetch transaction data from linked bank accounts using Apache Camel
+
+Normalize data into a unified schema:
+
+date, description, amount, type, balanceAfterTxn, bankName
+
+Provide REST API:
+
+GET /api/transactions?accountNumber=xxxx&from=...&to=...
+
+Cache responses for performance (using Redis)
+
+Store historical data in PostgreSQL for auditing or analytics
+
+4. Loan Recommendation Engine
+Recommend personalized loan offers based on:
+
+User profile
+
+Past loan applications
+
+Linked account activity (e.g., transaction patterns)
+
+5. Loan Comparison & Filtering
+Users can compare selected offers
+
+Apply filtering by:
+
+Bank
+
+Interest rate
+
+Repayment term
+
+Credit score
+
+⚙️ Tech Stack
+
+Layer	Technology
+Language	Java 21
+Framework	Spring Boot 3.2.x
+API Integration	Apache Camel
+Design Pattern	Factory Pattern
+Caching	Redis (Spring Data Redis)
+DB	PostgreSQL
+Discovery	Eureka (Spring Cloud Netflix)
+Monitoring	Spring Boot Actuator + Prometheus
+Documentation	Swagger (Springdoc OpenAPI)
+Testing	JUnit + Mockito
+🌐 REST Endpoints (Examples)
+http
+Copy
+Edit
+# Loan Offers
+GET  /api/loans/all
+GET  /api/loans/filter?amount=100000&bank=HDFC,SBI
+GET  /api/loans/compare?ids=loan1,loan2
+GET  /api/loans/recommendations?userId=123
+
+# Linked Bank Accounts
+GET  /api/accounts/linked?userId=123
+POST /api/accounts/link
+DELETE /api/accounts/unlink
+
+# Bank Transactions
+GET  /api/transactions?accountNumber=xxxx&from=2024-01-01&to=2024-04-01
+
+# Monitoring & Docs
+GET /actuator/health
+GET /actuator/prometheus
+GET /swagger-ui.html
+📁 Suggested Project Structure
+pgsql
+Copy
+Edit
+com.example.loanaggregator
+├── controller
+│   ├── LoanController.java
+│   ├── AccountController.java
+│   └── TransactionController.java
+├── service
+│   ├── factory (BankLoanProvider, LoanProviderFactory)
+│   ├── recommendation
+│   ├── aggregation
+│   └── transaction
+├── model
+│   ├── LoanOffer.java
+│   ├── LinkedBankAccount.java
+│   ├── BankTransaction.java
+├── repository
+│   └── JPA interfaces for DB access
+├── config
+│   ├── SwaggerConfig.java
+│   ├── RedisConfig.java
+│   ├── PrometheusConfig.java
+├── cache
+├── integration (camel routes)
+├── util
+├── test
+│   ├── controller
+│   ├── service
+│   └── factory
+✅ Observability Features
+Actuator endpoints:
+
+/actuator/metrics, /actuator/prometheus, /actuator/health
+
+Custom metrics:
+
+Loan API usage count
+
+Avg response time per provider
+
+Linked accounts per user
+
+Export metrics to Prometheus via /actuator/prometheus
+
+✅ Testing Strategy
+Unit test:
+
+Factory resolution
+
+Bank offer aggregation
+
+Transaction normalization
+
+Use @WebMvcTest, @MockBean, @DataJpaTest
+
+Mock Apache Camel routes in test config
+
+🧠 Bonus Suggestions
+Add resilience using Resilience4j (e.g., circuit breaker on bank APIs)
+

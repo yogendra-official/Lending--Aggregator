@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  # PostgreSQL database for user management service
+  user-db:
+    image: postgres:16-alpine
+    container_name: user-management-db
+    environment:
+      POSTGRES_DB: usermanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - accountaggregator-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # PostgreSQL database for loan aggregation service
+  loan-db:
+    image: postgres:16-alpine
+    container_name: loan-aggregation-db
+    environment:
+      POSTGRES_DB: loanaggregation
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - loan-db-data:/var/lib/postgresql/data
+    networks:
+      - accountaggregator-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # User Management Service
+  user-management-service:
+    build:
+      context: ./user-management-service
+      dockerfile: Dockerfile
+    container_name: user-management-service
+    depends_on:
+      user-db:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - JDBC_DATABASE_URL=jdbc:postgresql://user-db:5432/usermanagement
+      - JDBC_DATABASE_USERNAME=postgres
+      - JDBC_DATABASE_PASSWORD=password
+      - JWT_SECRET=secureJwtSecretKeyForProductionEnvironment
+      - SERVER_PORT=8081
+      - EUREKA_URI=http://service-registry:8761/eureka
+    ports:
+      - "8081:8081"
+    networks:
+      - accountaggregator-network
+
+  # Loan Aggregation Service
+  loan-aggregation-service:
+    build:
+      context: ./loan-aggregation-service
+      dockerfile: Dockerfile
+    container_name: loan-aggregation-service
+    depends_on:
+      loan-db:
+        condition: service_healthy
+      user-management-service:
+        condition: service_started
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - JDBC_DATABASE_URL=jdbc:postgresql://loan-db:5432/loanaggregation
+      - JDBC_DATABASE_USERNAME=postgres
+      - JDBC_DATABASE_PASSWORD=password
+      - JWT_SECRET=secureJwtSecretKeyForProductionEnvironment
+      - SERVER_PORT=8082
+      - EUREKA_URI=http://service-registry:8761/eureka
+      - SBI_API_URL=https://api.sbi.com
+      - SBI_API_KEY=${SBI_API_KEY}
+      - HDFC_API_URL=https://api.hdfc.com
+      - HDFC_API_KEY=${HDFC_API_KEY}
+    ports:
+      - "8082:8082"
+    networks:
+      - accountaggregator-network
+
+  # Service Registry (Eureka)
+  service-registry:
+    image: springcloud/eureka
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    networks:
+      - accountaggregator-network
+
+  # Frontend Application
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - user-management-service
+      - loan-aggregation-service
+    environment:
+      - REACT_APP_API_URL=http://localhost:8081
+      - REACT_APP_LOAN_API_URL=http://localhost:8082
+    networks:
+      - accountaggregator-network
+
+networks:
+  accountaggregator-network:
+    driver: bridge
+
+volumes:
+  user-db-data:
+  loan-db-data:
